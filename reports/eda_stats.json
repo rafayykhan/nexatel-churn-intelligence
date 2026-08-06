@@ -1,0 +1,117 @@
+{
+  "data_quality": {
+    "rows": 7043,
+    "duplicate_customer_ids": 0,
+    "missing_total_charges": 11,
+    "missing_all_tenure_zero": true,
+    "zero_tenure_customers": 11,
+    "negative_or_zero_charges": 0
+  },
+  "overall": {
+    "customers": 7043,
+    "churned": 1869,
+    "churn_rate_pct": 26.54,
+    "mrr_total": 456116.6,
+    "mrr_at_risk": 139130.85,
+    "annualised_at_risk": 1669570.2,
+    "avg_tenure_churned": 18.0,
+    "avg_tenure_retained": 37.6
+  },
+  "churn_by_category": {
+    "contract": {
+      "Month-to-month": 42.71,
+      "One year": 11.27,
+      "Two year": 2.83
+    },
+    "internet_service": {
+      "Fiber optic": 41.89,
+      "DSL": 18.96,
+      "No": 7.4
+    },
+    "payment_method": {
+      "Electronic check": 45.29,
+      "Mailed check": 19.11,
+      "Bank transfer (automatic)": 16.71,
+      "Credit card (automatic)": 15.24
+    },
+    "tech_support": {
+      "No": 41.64,
+      "Yes": 15.17,
+      "No internet service": 7.4
+    },
+    "online_security": {
+      "No": 41.77,
+      "Yes": 14.61,
+      "No internet service": 7.4
+    },
+    "paperless_billing": {
+      "Yes": 33.57,
+      "No": 16.33
+    },
+    "dependents": {
+      "No": 31.28,
+      "Yes": 15.45
+    },
+    "partner": {
+      "No": 32.96,
+      "Yes": 19.66
+    },
+    "senior_citizen": {
+      "1": 41.68,
+      "0": 23.61
+    }
+  },
+  "multicollinear_pairs": [
+    {
+      "a": "tenure",
+      "b": "total_charges",
+      "r": 0.826
+    },
+    {
+      "a": "tenure",
+      "b": "tenure_group_ord",
+      "r": 0.961
+    },
+    {
+      "a": "monthly_charges",
+      "b": "avg_monthly_spend_ratio",
+      "r": 0.996
+    },
+    {
+      "a": "total_services",
+      "b": "protection_services",
+      "r": 0.913
+    }
+  ],
+  "target_correlation": {
+    "contract_ord": -0.397,
+    "tenure": -0.352,
+    "tenure_group_ord": -0.345,
+    "total_charges": -0.198,
+    "protection_services": -0.173,
+    "total_services": -0.088,
+    "charge_trend_delta": 0.002,
+    "senior_citizen": 0.151,
+    "avg_monthly_spend_ratio": 0.193,
+    "monthly_charges": 0.193,
+    "manual_payment_flag": 0.21,
+    "is_fiber": 0.308,
+    "no_protection_flag": 0.32,
+    "new_customer_risk_flag": 0.349
+  },
+  "worst_segment": {
+    "contract": "Month-to-month",
+    "tenure_group": "0-12",
+    "churn_pct": 51.4,
+    "customers": 1994
+  },
+  "churn_by_service_count": {
+    "0": 21.41,
+    "1": 45.76,
+    "2": 35.82,
+    "3": 27.37,
+    "4": 22.3,
+    "5": 12.43,
+    "6": 5.28
+  }
+}
