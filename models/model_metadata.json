@@ -1,0 +1,98 @@
+{
+  "final_model": "Random Forest",
+  "best_params": {
+    "clf__n_estimators": 500,
+    "clf__min_samples_leaf": 10,
+    "clf__max_features": "sqrt",
+    "clf__max_depth": 8
+  },
+  "decision_threshold": 0.31,
+  "threshold_chosen_on": "cross-validated training predictions, expected-profit maximum",
+  "trained_rows": 5634,
+  "test_rows": 1409,
+  "feature_columns": [
+    "tenure",
+    "monthly_charges",
+    "total_charges",
+    "total_services",
+    "protection_services",
+    "avg_monthly_spend_ratio",
+    "charge_trend_delta",
+    "contract_ord",
+    "tenure_group_ord",
+    "senior_citizen",
+    "new_customer_risk_flag",
+    "manual_payment_flag",
+    "no_protection_flag",
+    "is_fiber",
+    "gender",
+    "partner",
+    "dependents",
+    "phone_service",
+    "paperless_billing",
+    "multiple_lines",
+    "internet_service",
+    "online_security",
+    "online_backup",
+    "device_protection",
+    "tech_support",
+    "streaming_tv",
+    "streaming_movies",
+    "payment_method",
+    "contract",
+    "tenure_group"
+  ],
+  "model_matrix_width": 54,
+  "metrics_at_default_threshold": {
+    "threshold": 0.5,
+    "accuracy": 0.7644,
+    "precision": 0.5386,
+    "recall": 0.7834,
+    "f1": 0.6383,
+    "roc_auc": 0.8445,
+    "pr_auc": 0.6578,
+    "confusion_matrix": {
+      "tn": 784,
+      "fp": 251,
+      "fn": 81,
+      "tp": 293
+    }
+  },
+  "metrics_at_business_threshold": {
+    "threshold": 0.31,
+    "accuracy": 0.6778,
+    "precision": 0.4467,
+    "recall": 0.8957,
+    "f1": 0.5961,
+    "roc_auc": 0.8445,
+    "pr_auc": 0.6578,
+    "confusion_matrix": {
+      "tn": 620,
+      "fp": 415,
+      "fn": 39,
+      "tp": 335
+    }
+  },
+  "economics": {
+    "retention_offer_cost": 35.0,
+    "assumed_save_rate": 0.3,
+    "horizon_months": 12,
+    "test_set_annual_value_default": 59304.46,
+    "test_set_annual_value_business": 63690.78,
+    "projected_annual_value_500k_book": 22601412.35
+  },
+  "risk_bands": {
+    "low": [
+      0.0,
+      0.186
+    ],
+    "medium": [
+      0.186,
+      0.31
+    ],
+    "high": [
+      0.31,
+      1.0
+    ]
+  }
+}
