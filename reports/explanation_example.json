@@ -1,0 +1,44 @@
+{
+  "churn_probability": 0.6347,
+  "risk_factors": [
+    {
+      "feature": "tenure",
+      "label": "months as a customer",
+      "impact": 0.0443,
+      "value": 2.0
+    },
+    {
+      "feature": "contract_Month-to-month",
+      "label": "month-to-month contract",
+      "impact": 0.0442,
+      "value": "yes"
+    },
+    {
+      "feature": "new_customer_risk_flag",
+      "label": "new + month-to-month + no tech support",
+      "impact": 0.0387,
+      "value": 1.0
+    }
+  ],
+  "protective_factors": [
+    {
+      "feature": "online_security_Yes",
+      "label": "has online security",
+      "impact": -0.0141,
+      "value": "yes"
+    },
+    {
+      "feature": "internet_service_DSL",
+      "label": "DSL internet",
+      "impact": -0.0132,
+      "value": "yes"
+    },
+    {
+      "feature": "protection_services",
+      "label": "protection add-ons held",
+      "impact": -0.0063,
+      "value": 2.0
+    }
+  ],
+  "recommended_action": "Offer a 12-month contract with the first two months discounted \u2014 contract length is the single largest retention lever in the data (42.7% churn month-to-month vs 2.8% on two-year)."
+}
