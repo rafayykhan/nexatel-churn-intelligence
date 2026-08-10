@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NexaTel — Retention Intelligence</title>
+<meta name="description" content="Score a subscriber's cancellation risk, see why, and get a retention action." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <strong>NexaTel</strong>
+      <span class="brand-sub">Retention Intelligence</span>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab is-active" role="tab" aria-selected="true" data-view="score">Score a customer</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="insights">Book insights</button>
+  </nav>
+  <div class="status" id="status" title="Model status">
+    <span class="dot" id="status-dot"></span>
+    <span id="status-text">connecting…</span>
+  </div>
+</header>
+
+<!-- ============================ SCORING ============================ -->
+<main id="view-score" class="wrap">
+  <section class="panel form-panel">
+    <div class="panel-head">
+      <p class="eyebrow">Customer record</p>
+      <h1>Check who is about to leave</h1>
+      <p class="lede">Fill in what the account shows, or load a sample profile. The score updates the moment you submit.</p>
+      <div class="sample-row" id="samples"></div>
+    </div>
+
+    <form id="churn-form" novalidate>
+      <fieldset>
+        <legend><span class="leg-mark"></span>Profile</legend>
+        <div class="fields">
+          <label>Gender
+            <select name="gender"><option>Female</option><option>Male</option></select>
+          </label>
+          <label>Senior citizen
+            <select name="senior_citizen"><option value="0">No</option><option value="1">Yes</option></select>
+          </label>
+          <label>Has a partner
+            <select name="partner"><option>No</option><option>Yes</option></select>
+          </label>
+          <label>Has dependents
+            <select name="dependents"><option>No</option><option>Yes</option></select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="leg-mark"></span>Account</legend>
+        <div class="fields">
+          <label>Months with NexaTel
+            <input type="number" name="tenure" min="0" max="120" value="3" required />
+          </label>
+          <label>Contract
+            <select name="contract"><option>Month-to-month</option><option>One year</option><option>Two year</option></select>
+          </label>
+          <label>Payment method
+            <select name="payment_method">
+              <option>Electronic check</option><option>Mailed check</option>
+              <option>Bank transfer (automatic)</option><option>Credit card (automatic)</option>
+            </select>
+          </label>
+          <label>Paperless billing
+            <select name="paperless_billing"><option>Yes</option><option>No</option></select>
+          </label>
+          <label>Monthly bill
+            <span class="prefixed"><i>$</i><input type="number" name="monthly_charges" min="0" max="500" step="0.05" value="94.40" required /></span>
+          </label>
+          <label>Billed to date <em class="hint">leave blank to estimate</em>
+            <span class="prefixed"><i>$</i><input type="number" name="total_charges" min="0" step="0.05" placeholder="auto" /></span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="leg-mark"></span>Services</legend>
+        <div class="fields">
+          <label>Phone service
+            <select name="phone_service"><option>Yes</option><option>No</option></select>
+          </label>
+          <label>Multiple lines
+            <select name="multiple_lines"><option>No</option><option>Yes</option><option>No phone service</option></select>
+          </label>
+          <label>Internet service
+            <select name="internet_service"><option>Fiber optic</option><option>DSL</option><option>No</option></select>
+          </label>
+        </div>
+        <p class="addon-label">Add-ons</p>
+        <div class="addons" id="addons"></div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary" id="submit-btn">Score customer</button>
+        <button type="button" class="btn-ghost" id="reset-btn">Clear form</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ---------------------------- RESULT ---------------------------- -->
+  <aside class="panel result-panel" id="result-panel">
+    <div class="empty" id="result-empty">
+      <div class="empty-art" aria-hidden="true">
+        <svg viewBox="0 0 120 70"><path d="M6 62 A 54 54 0 0 1 114 62" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 6" stroke-linecap="round"/></svg>
+      </div>
+      <p>No customer scored yet.</p>
+      <span>Submit the form and the risk reading appears here.</span>
+    </div>
+
+    <div class="result" id="result" hidden>
+      <p class="eyebrow">Cancellation risk</p>
+
+      <div class="gauge-wrap">
+        <svg class="gauge" viewBox="0 0 220 132" role="img" aria-labelledby="gauge-label">
+          <title id="gauge-label">Risk gauge</title>
+          <defs>
+            <linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#06B6D4"/><stop offset="55%" stop-color="#7C3AED"/><stop offset="100%" stop-color="#F43F5E"/>
+            </linearGradient>
+          </defs>
+          <path class="arc-track" d="M20 118 A 90 90 0 0 1 200 118" />
+          <path class="arc-value" id="arc" d="M20 118 A 90 90 0 0 1 200 118" />
+          <line class="arc-tick" id="threshold-tick" x1="110" y1="20" x2="110" y2="38" />
+        </svg>
+        <div class="gauge-read">
+          <span class="score" id="score">0</span><span class="pct">%</span>
+          <span class="chip" id="risk-chip">—</span>
+        </div>
+        <p class="tick-note" id="tick-note"></p>
+      </div>
+
+      <div class="verdict" id="verdict"></div>
+
+      <div class="block">
+        <p class="block-head">Why <span class="mono" id="factor-count"></span></p>
+        <ul class="factors" id="risk-factors"></ul>
+      </div>
+
+      <div class="block" id="protective-block">
+        <p class="block-head">Working in our favour</p>
+        <ul class="factors protective" id="protective-factors"></ul>
+      </div>
+
+      <div class="action-card">
+        <p class="block-head">Recommended action</p>
+        <p id="action-text"></p>
+        <p class="revenue"><span id="revenue"></span> of annual revenue sits on this account.</p>
+      </div>
+
+      <p class="model-note mono" id="model-note"></p>
+    </div>
+  </aside>
+</main>
+
+<!-- ============================ INSIGHTS ============================ -->
+<main id="view-insights" class="wrap wrap-single" hidden>
+  <section class="panel">
+    <div class="panel-head">
+      <p class="eyebrow">Analysis of 7,043 subscribers</p>
+      <h1>What the book is telling us</h1>
+      <p class="lede">The patterns behind the score, straight from the historical data.</p>
+    </div>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="insight-grid">
+      <div class="insight-card">
+        <p class="block-head">Churn by contract type</p>
+        <div class="bars" id="contract-bars"></div>
+      </div>
+      <div class="insight-card">
+        <p class="block-head">What drives the model</p>
+        <div class="bars" id="shap-bars"></div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <p class="block-head">Model comparison</p>
+      <div class="table-scroll"><table id="model-table"><thead></thead><tbody></tbody></table></div>
+      <p class="fine">Recall is the metric that matters here: a missed churner costs a whole customer, a false alarm costs one retention offer.</p>
+    </div>
+
+    <div class="figures" id="figures"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span class="mono">NexaTel Churn Intelligence</span>
+  <span>Data science capstone · Random Forest · SHAP explanations</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
