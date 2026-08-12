@@ -1,0 +1,18 @@
+# Render blueprint — one web service running API + frontend together.
+# Deploy: push to GitHub, then New > Blueprint on render.com and pick the repo.
+services:
+  - type: web
+    name: nexatel-churn
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      # Same-origin by default because the frontend ships with the API.
+      # Set this to the Vercel URL if you split them onto two hosts.
+      - key: ALLOWED_ORIGINS
+        value: "*"

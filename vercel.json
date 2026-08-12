@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "comment": "Optional split deploy: static frontend on Vercel, API on Render. Set NEXATEL_API in frontend/config.js to the Render URL first, otherwise the app calls its own origin and every request 404s.",
+  "buildCommand": null,
+  "outputDirectory": "frontend",
+  "cleanUrls": true,
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}
