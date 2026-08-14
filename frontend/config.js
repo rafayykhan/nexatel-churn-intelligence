@@ -8,4 +8,4 @@
  * on Vercel with the API on Render. Include this file before app.js in
  * index.html when you do.
  */
-window.NEXATEL_API = "";
+window.NEXATEL_API = "https://nexatel-churn-intelligence.onrender.com";
